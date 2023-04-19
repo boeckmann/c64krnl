@@ -1,15 +1,23 @@
 .include "disclaim.a65"
 .include "declare.a65"
 
-PATCH_SIZE = 45
+FLAG_RRBY    = 1 ; put "RRBY" at $FFF6, these are author initials
+		 ; if 0 this is filled by AA
+		 
+ROM_START    = $E000
+KERNAL_START = $E500
+PATCH_SIZE   = 45
 
-	.org $E000	; KERNAL ROM start
-	.fill $E500 - $E000 - PATCH_SIZE, $AA	; filled by BASIC ROM
+	.org ROM_START	; KERNAL ROM start
+
+	; the following fill bytes must be replaced by BASIC code to get
+	; a working KERNAL rom 
+	.fill KERNAL_START - ROM_START - PATCH_SIZE, $AA
 
 .include "patches.a65"		; KERNAL patches located before $E500
 
-.if @ != $E500
-	.echo "kernel MUST start at $E500"
+.if @ != KERNAL_START
+	.echo "KERNAL MUST start at ", [$]KERNAL_START
 .endif
 
 .include "editor1.a65"

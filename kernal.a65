@@ -1,6 +1,17 @@
 .include "disclaim.a65"
 .include "declare.a65"
-	.org $E500         ;START OF VIC-40 KERNAL
+
+PATCH_SIZE = 45
+
+	.org $E000	; KERNAL ROM start
+	.fill $E500 - $E000 - PATCH_SIZE, $AA	; filled by BASIC ROM
+
+.include "patches.a65"		; KERNAL patches located before $E500
+
+.if @ != $E500
+	.echo "kernel MUST start at $E500"
+.endif
+
 .include "editor1.a65"
 ;.include "CONKAT (JAPAN CONVERSION TABLES)
 .include "editor2.a65"

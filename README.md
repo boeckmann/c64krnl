@@ -1,5 +1,9 @@
 # C64 Kernal source ported to ASM6502
 
+Porting in progress...
+
+The assembler can be obtained from https://github.com/boeckmann/asm6502
+
 The original source can be found at https://github.com/mist64/cbmsrc/tree/master/KERNAL_C64_03
 
 The KERNAL ROM is 8k in size and located at E000-FFFF.

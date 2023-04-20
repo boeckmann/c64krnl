@@ -1,0 +1,144 @@
+
+ADDPRC	=1
+ROMLOC	=$A000          ;VIC-40 BASIC ROM
+LINLEN	=40             ;VIC SCREEN SIZE ?WHY?
+BUFLEN	=89             ;VIC BUFFER
+BUFPAG	=2
+BUF	=512
+STKEND	=507
+CLMWID	=10             ;PRINT WINDOW 10 CHARS
+PI	=255
+NUMLEV	=23
+STRSIZ	=3
+BLANK0	.org @+3           ;6510 REGISTER AREA
+ADRAY1	.org @+2           ;CONVERT FLOAT->INTEGER
+ADRAY2	.org @+2           ;CONVERT INTEGER->FLOAT
+INTEGR
+CHARAC	.org @+1
+ENDCHR	.org @+1
+TRMPOS	.org @+1
+VERCK	.org @+1
+COUNT	.org @+1
+DIMFLG	.org @+1
+VALTYP	.org @+1
+INTFLG	.org @+1
+GARBFL
+DORES	.org @+1
+SUBFLG	.org @+1
+INPFLG	.org @+1
+DOMASK
+TANSGN	.org @+1
+CHANNL	.org @+1
+POKER
+LINNUM	.org @+2
+TEMPPT	.org @+1
+LASTPT	.org @+2
+TEMPST	.org @+9
+INDEX
+INDEX1	.org @+2
+INDEX2	.org @+2
+RESHO	.org @+1
+RESMOH	.org @+1
+ADDEND
+RESMO	.org @+1
+RESLO	.org @+1
+	.org @+1
+TXTTAB	.org @+2
+VARTAB	.org @+2
+ARYTAB	.org @+2
+STREND	.org @+2
+FRETOP	.org @+2
+FRESPC	.org @+2
+MEMSIZ	.org @+2
+CURLIN	.org @+2
+OLDLIN	.org @+2
+OLDTXT	.org @+2
+DATLIN	.org @+2
+DATPTR	.org @+2
+INPPTR	.org @+2
+VARNAM	.org @+2
+FDECPT	
+VARPNT	.org @+2
+LSTPNT
+ANDMSK
+FORPNT	.org @+2
+EORMSK	=FORPNT+1
+VARTXT
+OPPTR	.org @+2
+OPMASK	.org @+1
+GRBPNT
+TEMPF3
+DEFPNT	.org @+2
+DSCPNT	.org @+2
+	.org @+1
+FOUR6	.org @+1
+JMPER	.org @+1
+SIZE	.org @+1
+OLDOV	.org @+1
+TEMPF1	.org @+1
+ARYPNT
+HIGHDS	.org @+2
+HIGHTR	.org @+2
+TEMPF2
+	.org @+1
+DECCNT
+LOWDS	.org @+2
+GRBTOP
+DPTFLG
+LOWTR	.org @+1
+EXPSGN	.org @+1
+TENEXP	=LOWDS+1
+EPSGN	=LOWTR+1
+DSCTMP
+FAC
+FACEXP	.org @+1
+FACHO	.org @+1
+FACMOH	.org @+1
+INDICE
+FACMO	.org @+1
+FACLO	.org @+1
+FACSGN	.org @+1
+DEGREE
+SGNFLG	.org @+1
+BITS	.org @+1
+ARGEXP	.org @+1
+ARGHO	.org @+1
+ARGMOH	.org @+1
+ARGMO	.org @+1
+ARGLO	.org @+1
+ARGSGN	.org @+1
+STRNGI
+ARISGN	.org @+1
+FACOV	.org @+1
+BUFPTR
+STRNG2
+POLYPT
+CURTOL
+FBUFPT	.org @+2
+CHRGET	.org @+6
+CHRGOT	.org @+1
+TXTPTR	.org @+6
+QNUM	.org @+10
+CHRRTS	.org @+1
+RNDX	.org @+5
+	.org 255
+LOFBUF	.org @+1
+FBUFFR	.org @+1
+STRNG1	=ARISGN
+;
+	.org $0300         ;BASIC INDIRECTS
+IERROR	.org @+2           ;INDIRECT ERROR (OUTPUT ERROR IN .X)
+IMAIN	.org @+2           ;INDIRECT MAIN (SYSTEM DIRECT LOOP)
+ICRNCH	.org @+2           ;INDIRECT CRUNCH (TOKENIZATION ROUTINE)
+IQPLOP	.org @+2           ;INDIRECT LIST (CHAR LIST)
+IGONE	.org @+2           ;INDIRECT GONE (CHAR DISPATCH)
+IEVAL	.org @+2           ;INDIRECT EVAL (SYMBOL EVALUATION)
+;TEMP STORAGE UNTILL SYSTEM INTERGRATION
+; SYS 6502 REGS
+SAREG	.org @+1           ;.A REG
+SXREG	.org @+1           ;.X REG
+SYREG	.org @+1           ;.Y REG
+SPREG	.org @+1           ;.P REG
+USRPOK	.org @+3           ;USER FUNCTION DISPATCH
+	.org $0300+20      ;SYSTEM INDIRECTS FOLLOW
+

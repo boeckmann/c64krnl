@@ -1,7 +1,5 @@
+Basic ROM:
+ - check sum at $BF52 = $EC
 
-
-irqfile.a65:
- - put patch files to right position
-
- save.a65:
-  - line 22: NSAVE	LDA FA  ***MONITOR ENTRY
+Kernal ROM:
+ - check sum at $E4AC = $81

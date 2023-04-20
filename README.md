@@ -18,7 +18,7 @@ There are now `kernal/kernal.bin` and `basic/basic.bin` files and listing files 
 
 The binaries are *not* the ROM files, because the BASIC binary is too large to fit into ROM. The last $4B7 bytes of BASIC reside in the KERNAL ROM.
 
-To generate the KERNAL and BASIC ROM files run the following after creating the binaries above. You may have to adjust the two .a65 files in the rom directory if the directory separator of your operating system is not the forward slash `/`.:
+To generate the KERNAL and BASIC ROM files run the following after creating the binaries above. You may have to adjust the two .a65 files in the rom directory if the directory separator of your operating system is not the forward slash `/`:
 ```
 cd rom
 asm6502 kernal.a65 kernal.rom

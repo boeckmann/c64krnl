@@ -1,0 +1,7 @@
+; Copy the last $4B7 bytes of the BASIC binary and the Kernal binary starting
+; from offset $4B7 to generate the KERNAL ROM
+
+; Check sum? at $4AC is zero. The original V3 ROM contains $81.
+
+.binary "../basic/basic.bin", $2000, $4B7
+.binary "../kernal/kernal.bin", $4B7

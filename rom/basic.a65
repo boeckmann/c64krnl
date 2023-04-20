@@ -1,0 +1,5 @@
+; Copy the first 8192 of the BASIC binary to make the BASIC ROM
+
+; Check sum at offset $1F52 is zero. The original ROM contains $EC.
+
+.binary "../basic/basic.bin", 0, 8192

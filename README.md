@@ -1,16 +1,35 @@
-# C64 Kernal source ported to ASM6502
+# C64 Kernal V3 and BASIC V2 source ported to ASM6502
 
 The assembler can be obtained from https://github.com/boeckmann/asm6502
 
-The original source can be found at https://github.com/mist64/cbmsrc/tree/master/KERNAL_C64_03
+The original source can be found at https://github.com/mist64/cbmsrc/tree/master/
 
 
 ## Building
-Build with:
+Build the KERNAL and BASIC binary files:
 ```
+cd kernal
 asm6502 kernal.a65 kernal.bin kernal.lst
+cd ../basic
+asm6502 basic.a65 basic.bin basic.lst
+cd ..
 ```
-The command creates a binary 8192 bytes in size. The first $4D3 bytes are filled by $AA. The original ROMS contain code of the BASIC interpreter in this range. Otherwise this should hopefully be an exact replica of the C64 KERNAL V3 ROM.
+There are now `kernal/kernal.bin` and `basic/basic.bin` files and listing files `kernal/kernal.lst` and `basic/basic.lst`.
+
+The binaries are *not* the ROM files, because the BASIC binary is too large to fit into ROM. The last $4B7 bytes of BASIC reside in the KERNAL ROM.
+
+To generate the KERNAL and BASIC ROM files run the following after creating the binaries above. You may have to adjust the two .a65 files in the rom directory if the directory separator of your operating system is not the forward slash `/`.:
+```
+cd rom
+asm6502 kernal.a65 kernal.rom
+asm6502 basic.a65 basic.rom
+```
+This generates `kernal.rom` and `basic.rom` inside the `rom` sub-directory. These are the ROM files.
+
+The check sum bytes are zero. You may put the original check sums into place with your favourite hex editor:
+
+ - Basic ROM check sum at offset $1F52 = $EC
+ - Kernal ROM check sum at offset $4AC = $81
 
 ## Variations
 

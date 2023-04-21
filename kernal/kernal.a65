@@ -1,18 +1,20 @@
 .include "disclaim.a65"
 .include "declare.a65"
 
-FLAG_RRBY    = 1 ; put "RRBY" at $FFF6, these are author initials
-		 ; if 0 this is filled by AA
+FLAG_RRBY    = 1  ; put "RRBY" at $FFF6, these are engineers initials
+		  ; filled with $AA of set to zero
+FLAG_FIX_FF7E = 0 ; this fix for reasons unknown to me did not make it
+		  ; into the official V3 KERNAL ROMs
 		 
-ROM_START    = $E000
-KERNAL_START = $E500
-PATCH_SIZE   = 45
+	ROM_START    = $E000
+	KERNAL_START = $E500
+	PATCH_SIZE   = 45
 
-	.org ROM_START	; KERNAL ROM start
+.org ROM_START	; KERNAL ROM start
 
-	; the following fill bytes must be replaced by BASIC code to get
-	; a working KERNAL rom 
-	.fill KERNAL_START - ROM_START - PATCH_SIZE, $AA
+; the following fill bytes must be replaced by BASIC code from basic.bin
+; to get a working KERNAL ROM 
+.fill KERNAL_START - ROM_START - PATCH_SIZE, $AA
 
 .include "patches.a65"		; KERNAL patches located before $E500
 

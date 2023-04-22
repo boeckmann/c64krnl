@@ -16,7 +16,7 @@ cd ..
 ```
 There are now `kernal/kernal.bin` and `basic/basic.bin` files and listing files `kernal/kernal.lst` and `basic/basic.lst`.
 
-The binaries are *not* the ROM files, because the BASIC binary is too large to fit into ROM. The last $4B7 bytes of BASIC reside in the KERNAL ROM.
+The binaries are *not* the ROM files, because the BASIC binary is too large to fit into its ROM. The last $4B7 bytes of BASIC reside in the KERNAL ROM.
 
 To generate the KERNAL and BASIC ROM files run the following after creating the binaries above. You may have to adjust the two .a65 files in the rom directory if the directory separator of your operating system is not the forward slash `/`:
 ```
@@ -31,6 +31,8 @@ The check sum bytes are zero. You may put the original check sums into place wit
  - Basic ROM check sum at offset $1F52 = $EC
  - Kernal ROM check sum at offset $4AC = $81
 
-## Variations
+## Flags
+Two flags may be altered in the file `kernal/kernal.a65`:
 
-- Most ROMS contain "RRBY" at $FFF6-$FFF9, these are the initials of authors. But this is not included in the original source I based my work on. I included a flag FLAG_RRBY in kernal.a65 to put them in (on by default).
+ - `FLAG_RRBY`: Most ROMS contain "RRBY" at $FFF6-$FFF9. These are the initials of Commodore engineers. The initials are not included in the source I based my work on, so I patched them in again. Set `FLAG_RRBY=0` to disable it.
+ - `FLAG_FIX_FF7E`: The source I based my work on contains `JMP CLKHI` at $FF7D, but it is `JMP CLKLO` in the Kernal V3 ROM. FLAG_FIX_FF7E may be set to 1 if you want it to be `JMP CLKHI`.

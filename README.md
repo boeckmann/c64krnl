@@ -1,8 +1,8 @@
 # C64 Kernal V3 and BASIC V2 source ported to ASM6502
 
-The assembler can be obtained from https://github.com/boeckmann/asm6502
+The assembler can be obtained from https://github.com/boeckmann/asm6502.
 
-The original source can be found at https://github.com/mist64/cbmsrc/tree/master/
+The original source can be found at https://github.com/mist64/cbmsrc/tree/master/.
 
 
 ## Building
@@ -26,10 +26,17 @@ asm6502 basic.a65 basic.rom
 ```
 This generates `kernal.rom` and `basic.rom` inside the `rom` sub-directory. These are the ROM files.
 
-The check sum bytes are zero. You may put the original check sums into place with your favourite hex editor:
+## Adjusting the check-sum byte
+The check-sum bytes are zero. You may put the original check-sums into place with your favourite hex editor:
 
  - Basic ROM check sum at offset $1F52 = $EC
  - Kernal ROM check sum at offset $4AC = $81
+
+Or you may use the _cbmsum_ program provided in this repository. It is a little C program provided via the file `supp/cbmsum.c`. You can compile it with your favourite ANSI C compiler. To patch the ROMs, use it like this: 
+```
+cbmsum patch old kernal.rom e000 e4ac test.rom
+cbmsum patch old basic.rom a000 bf52 basic.rom
+```
 
 ## Flags
 Two flags may be altered in the file `kernal/kernal.a65`. If you alter one of these you will not produce an exact replica of the Kernal V3 ROM:

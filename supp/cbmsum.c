@@ -1,4 +1,5 @@
 /* CBM check-sum utility */
+/* (c)opyright 2023 by Bernd Boeckmann under the BSD-3 license */
 
 #include <stdio.h>
 #include <stdlib.h>

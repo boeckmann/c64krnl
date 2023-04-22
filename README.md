@@ -34,9 +34,10 @@ The check-sum bytes are zero. You may put the original check-sums into place wit
 
 Or you may use the _cbmsum_ program provided in this repository. It is a little C program provided via the file `supp/cbmsum.c`. You can compile it with your favourite ANSI C compiler. To patch the ROMs, use it like this: 
 ```
-cbmsum patch old kernal.rom e000 e4ac test.rom
+cbmsum patch old kernal.rom e000 e4ac kernal.rom
 cbmsum patch old basic.rom a000 bf52 basic.rom
 ```
+The tool can also verify the check-sum of a Commodore ROM. Call it without parameters for usage info.
 
 ## Flags
 Two flags may be altered in the file `kernal/kernal.a65`. If you alter one of these you will not produce an exact replica of the Kernal V3 ROM:

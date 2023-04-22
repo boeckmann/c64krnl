@@ -110,7 +110,8 @@ static unsigned char calculate( int algo, unsigned char *data, size_t size,
    data[chksum_addr - addr] = '\0';
    chksum = ((addr >> 8) - calc_chksum( algo, data, size )) & 0xff;
    
-   printf( "check-sum byte at %04X = %02X\n", chksum_addr, chksum);
+   printf( "check-sum byte at %04X = %02X\n", (unsigned)chksum_addr,
+                                              (unsigned)chksum);
    return chksum;
 }
 
@@ -165,7 +166,7 @@ int main( int argc, char *argv[] )
    }
 
    /* get check-sum address */
-   if (  !strcmp( argv[1], "calculate") || !strcmp( argv[1], "patch") ) {     
+   if (  !strcmp( argv[1], "calc") || !strcmp( argv[1], "patch") ) {     
       if ( argc < 6 ) goto usage;
       if ( !hexstr_to_num(argv[5], &chksum_addr) || 
          (chksum_addr < load_addr || chksum_addr > load_addr + file_size - 1 ) ) {
@@ -178,7 +179,7 @@ int main( int argc, char *argv[] )
    if ( !strcmp(argv[1], "verify") ) {
       verify( algo, file_data, file_size, load_addr );
    }
-   else if ( !strcmp( argv[1], "calculate") ) {
+   else if ( !strcmp( argv[1], "calc") ) {
       calculate( algo, file_data, file_size, load_addr, chksum_addr );
    }
    else if (  !strcmp( argv[1], "patch") ) {

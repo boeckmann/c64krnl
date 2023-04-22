@@ -1,4 +1,4 @@
-.include "disclaimer.a65"
+.include "disclaim.a65"
 .include "declare.a65"
 .include "tokens.a65"
 .include "token2.a65"

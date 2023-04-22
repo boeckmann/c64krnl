@@ -2,9 +2,9 @@
 .include "declare.a65"
 
 FLAG_RRBY    = 1  ; put "RRBY" at $FFF6, these are engineers initials
-		  ; filled with $AA of set to zero
+		  ; if 0 $FFF6-$FFF9 is filled with $AA
 FLAG_FIX_FF7E = 0 ; this fix for reasons unknown to me did not make it
-		  ; into the official V3 KERNAL ROMs
+		  ; into the official V3 KERNAL ROMs, so disabled by default
 		 
 	ROM_START    = $E000
 	KERNAL_START = $E500
@@ -16,7 +16,7 @@ FLAG_FIX_FF7E = 0 ; this fix for reasons unknown to me did not make it
 ; to get a working KERNAL ROM 
 .fill KERNAL_START - ROM_START - PATCH_SIZE, $AA
 
-.include "patches.a65"		; KERNAL patches located before $E500
+.include "patches.a65"		; KERNAL patches ahead of $E500
 
 .if @ != KERNAL_START
 	.echo "KERNAL MUST start at ", [$]KERNAL_START

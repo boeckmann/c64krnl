@@ -7,10 +7,10 @@
 #include <ctype.h>
 
 
-static off_t
+static size_t
 file_size(FILE *f)
 {
-    off_t pos, size;
+    size_t pos, size;
    
     pos = ftell(f);
     fseek(f, 0, SEEK_END);
@@ -22,7 +22,7 @@ file_size(FILE *f)
 
 
 static uint8_t *
-load_file(const char *fn, off_t *size)
+load_file(const char *fn, size_t *size)
 {
     FILE *f;
     uint8_t *buf;
@@ -44,7 +44,7 @@ load_file(const char *fn, off_t *size)
 
 
 static int
-write_file(const char *fn, const uint8_t *data, off_t len)
+write_file(const char *fn, const uint8_t *data, size_t len)
 {
     FILE *f = fopen(fn, "wb");
     if (f == NULL)
@@ -62,7 +62,7 @@ write_file(const char *fn, const uint8_t *data, off_t len)
 
 
 static uint8_t
-calc_chksum(int algo, uint8_t *data, off_t size)
+calc_chksum(int algo, uint8_t *data, size_t size)
 {
     uint8_t *endp = data + size;
     uint16_t chksum = 0;
@@ -166,7 +166,7 @@ main(int argc, char *argv[])
 {
     uint16_t load_addr, chksum_addr;
     uint8_t *file_data = NULL;
-    off_t file_size;
+    size_t file_size;
     int algo;
 
     if (argc < 5)

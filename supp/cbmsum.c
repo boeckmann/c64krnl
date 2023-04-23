@@ -18,8 +18,8 @@ static void print_usage( void )
       "  patch <algorithm> <in-file> <load-address-hex> <chksum-address> <out-file>\n"
       "         => calculate and write check-sum to ROM file\n\n"
       "algorithms:\n"
-      "   old    pre-1983 (C64 BASIC)\n"
-      "   new    after-1983 (C64 KERNAL)\n"
+      "   old    pre-1983 (C64 BASIC, KERNAL)\n"
+      "   new    after-1983\n"
    );
 }
 
@@ -115,7 +115,8 @@ static unsigned char calculate( int algo, unsigned char *data, size_t size,
    return chksum;
 }
 
-int verify( int algo, unsigned char *data, size_t size, unsigned short addr )
+static int verify( int algo, unsigned char *data, size_t size,
+                   unsigned short addr )
 {
    unsigned char correct_chksum = addr >> 8;
    unsigned char chksum;
@@ -153,42 +154,43 @@ int main( int argc, char *argv[] )
    }
 
    /* get load address */
-   if ( !hexstr_to_num(argv[4], &load_addr) ) {
-      printf("error: illegal load address\n");
+   if ( !hexstr_to_num( argv[4], &load_addr ) ) {
+      printf( "error: illegal load address\n" );
       goto error;
    }
 
    /* read ROM file */
    file_data = load_file( argv[3], &file_size );
    if ( !file_data ) {
-      printf( "error: can not load input file\n");
+      printf( "error: can not load input file\n" );
       goto error;
    }
 
    /* get check-sum address */
    if (  !strcmp( argv[1], "calc") || !strcmp( argv[1], "patch") ) {     
       if ( argc < 6 ) goto usage;
-      if ( !hexstr_to_num(argv[5], &chksum_addr) || 
-         (chksum_addr < load_addr || chksum_addr > load_addr + file_size - 1 ) ) {
-         printf("error: illegal check-sum address\n");
+      if ( !hexstr_to_num( argv[5], &chksum_addr ) || 
+         ( chksum_addr < load_addr || chksum_addr > load_addr + file_size - 1 ) ) {
+         printf( "error: illegal check-sum address\n" );
          free( file_data );
          goto error;
       }
    }
 
-   if ( !strcmp(argv[1], "verify") ) {
+   if ( !strcmp(argv[1], "verify" ) ) {
       verify( algo, file_data, file_size, load_addr );
    }
-   else if ( !strcmp( argv[1], "calc") ) {
+   else if ( !strcmp( argv[1], "calc" ) ) {
       calculate( algo, file_data, file_size, load_addr, chksum_addr );
    }
-   else if (  !strcmp( argv[1], "patch") ) {
+   else if ( !strcmp( argv[1], "patch" ) ) {
       if ( argc != 7 ) goto usage;
       file_data[chksum_addr - load_addr] =
          calculate( algo, file_data, file_size, load_addr, chksum_addr );
       if ( !write_file( argv[6], file_data, file_size ) ) {
-         printf("error: can not write output file\n" );
+         printf( "error: can not write output file\n" );
       }
+      printf( "patched file is %s, %u bytes written\n", argv[6], (unsigned)file_size );
    }
    else {
       goto usage;

@@ -7,4 +7,8 @@ cbmsum:	cbmsum.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 
+clean:
+	@-del *.exe 2>NUL
+
+
 # End of Makefile.

@@ -1,25 +1,30 @@
 
-ASM	:= P:\VARCem8\bin\vasm
+ASM	:= vasm
 AFLAGS	:= -q -p6510 -F
 SUM	:= ../supp/cbmsum
+MD5	:= md5sum
 
 ROMS	= kernal.rom basic.rom
 
 
-all:		$(ROMS)
+all:		crc $(ROMS)
 
 
 kernal.rom:	kernal.a65
-		$(ASM) $(AFLAGS) -o $@ $(DEFS) kernal.a65
-		$(SUM) patch old $@ e000 e4ac kernal.rom
+		@$(ASM) $(AFLAGS) -o $@ $(DEFS) kernal.a65
+		@$(SUM) patch old $@ e000 e4ac kernal.rom
 
 basic.rom:	basic.a65
-		$(ASM) $(AFLAGS) -o $@ $(DEFS) basic.a65
-		$(SUM) patch old $@ a000 bf52 basic.rom
+		@$(ASM) $(AFLAGS) -o $@ $(DEFS) basic.a65
+		@$(SUM) patch old $@ a000 bf52 basic.rom
 
-crc:		$(ROMS)
-		zcrc kernal.rom good/kernal.901227-03.bin
-		zcrc basic.rom good/basic.901226-01.bin
+crc md5:	$(ROMS)
+		@$(MD5) kernal.rom good/kernal.901227-03.bin
+		@$(MD5) basic.rom good/basic.901226-01.bin
+
+
+clean:
+		@-del *.rom 2>NUL
 
 
 # End of Makefile.

@@ -1,24 +1,23 @@
 # C64 Kernal V3 and BASIC V2 source ported to ASM6502
 
-This is a port of the Commodore C64 Kernal version 3 and BASIC version 2 to my small assembler ASM6502. The original source can be found at https://github.com/mist64/cbmsrc/tree/master/.
+This is a port of the Commodore C64 Kernal version 3 and BASIC version 2 to the ASM6502 assembler. It can also be built with the not yet released VASM by Fred N. van Kempen. The original source can be found at https://github.com/mist64/cbmsrc/tree/master/.
 
 ## Requirements
- - The assembler can be obtained from https://github.com/boeckmann/asm6502.
- - A C compiler is needed if you want to use the _CBMSUM_ utility provided by this repository to patch the ROM checksums.
- - A MD5 checksum generator is needed if you want to compare your builds with known to be good ROMs.
 
+ - The assembler can be obtained from https://github.com/boeckmann/asm6502.
+ - A MD5 checksum generator is needed if you want to compare your builds with known to be good ROMs.
+ - The Comodore ROMs contain a one-byte checksum at somewhat random positions. The _cbmsum_ utility can generate these checksum and put them into place. Put the utility into the `supp` directory, either by by downloading a pre-built version (Windows, DOS, OS/2), or by building it yourself with your favourite C compiler. The program consists of a single source file, `supp/cbmsum.c`. Under UNIX / Linux, entering `make` in the `supp` sub-directory should generate a binary if an ANSI C compiler is installed.
 
 ## ROM checksums
-Here are the MD5 checksums of known to be good ROMs. Use your favourite MD5 checksum generator to compare with these:
+Here are MD5 checksums of the original ROMs:
 ```
 MD5 (kernal.rom) = 39065497630802346bce17963f13c092
 MD5 (basic.rom) = 57af4ae21d4b705c2991d98ed5c1f7b8
 ```
-
 ## Building
 
 ### UNIX Makefile
-A UNIX makefile is provided by the file `Makefile.unix`. Adapt and call it via `make -f Makefile.unix`. For other platforms, you have to build by hand.
+A UNIX and Linux makefile is provided by the file `Makefile.asm6502`. Adapt and call it via `make -f Makefile.asm6502` to build the ROMs. If you have not altered the sources you may compare the checksums of your ROMs via `make -f Makefile.asm6502 verify`. For platforms other than Unix you have to build by hand for now, but its easy.
 
 ## Building by Hand
 Build the KERNAL and BASIC binary files:

@@ -1,3 +1,4 @@
+# Makefile for systems with the GCC compiler.
 
 CC	:= gcc
 CFLAGS	:= -s -O3

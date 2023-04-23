@@ -1,5 +1,6 @@
+# Makefile for use with the VARCem VASM assembler.
 
-ASM	:= P:\VARCem8\bin\vasm
+ASM	:= vasm
 AFLAGS	:= -q -p6510 -F
 
 
@@ -12,6 +13,11 @@ basic.bin:	basic.a65 \
 		 code26.a65 declare.a65 disclaim.a65 init.a65 nolist.a65 \
 		 token2.a65 tokens.a65 trig.a65
 		$(ASM) $(AFLAGS) -s -l basic.lst -o $@ $(DEFS) basic.a65
+
+
+clean:
+		@-del *.lst 2>NUL
+		@-del *.bin 2>NUL
 
 
 # End of Makefile.

@@ -1,11 +1,12 @@
 /* CBM checksum utility */
 /* (c)opyright 2023 by Bernd Boeckmann under the BSD-3 license */
-#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
+typedef unsigned char u8;
+typedef unsigned short u16;
 
 static size_t
 file_size(FILE *f)
@@ -20,12 +21,11 @@ file_size(FILE *f)
     return size;
 }
 
-
-static uint8_t *
+static u8 *
 load_file(const char *fn, size_t *size)
 {
     FILE *f;
-    uint8_t *buf;
+    u8 *buf;
 
     f = fopen(fn, "rb");
     if (f == NULL)
@@ -44,7 +44,7 @@ load_file(const char *fn, size_t *size)
 
 
 static int
-write_file(const char *fn, const uint8_t *data, size_t len)
+write_file(const char *fn, const u8 *data, size_t len)
 {
     FILE *f = fopen(fn, "wb");
     if (f == NULL)
@@ -61,12 +61,12 @@ write_file(const char *fn, const uint8_t *data, size_t len)
 }
 
 
-static uint8_t
-calc_chksum(int algo, uint8_t *data, size_t size)
+static u8
+calc_chksum(int algo, u8 *data, size_t size)
 {
-    uint8_t *endp = data + size;
-    uint16_t chksum = 0;
-    uint16_t carry = 0;
+    u8 *endp = data + size;
+    u16 chksum = 0;
+    u16 carry = 0;
 
     while (data < endp) {
 	chksum += *data++;
@@ -84,10 +84,10 @@ calc_chksum(int algo, uint8_t *data, size_t size)
 }
 
 
-static uint8_t
-calculate(int algo, uint8_t *data, size_t size, uint16_t addr, uint16_t chksum_addr )
+static u8
+calculate(int algo, u8 *data, size_t size, u16 addr, u16 chksum_addr )
 {
-    uint8_t chksum;
+    u8 chksum;
 
     data[chksum_addr - addr] = '\0';
     chksum = ((addr >> 8) - calc_chksum(algo, data, size)) & 0xff;
@@ -100,10 +100,10 @@ calculate(int algo, uint8_t *data, size_t size, uint16_t addr, uint16_t chksum_a
 
 
 static int
-verify(int algo, uint8_t *data, size_t size, uint16_t addr)
+verify(int algo, u8 *data, size_t size, u16 addr)
 {
-    uint8_t correct = addr >> 8;
-    uint8_t sum;
+    u8 correct = addr >> 8;
+    u8 sum;
 
     sum = calc_chksum(algo, data, size);
    
@@ -120,7 +120,7 @@ verify(int algo, uint8_t *data, size_t size, uint16_t addr)
 
 
 static int
-hexstr_to_num(const char *s, uint16_t *num)
+hexstr_to_num(const char *s, u16 *num)
 {
     int last_num = 0;
     int digits = 0;
@@ -164,8 +164,8 @@ print_usage(void)
 int
 main(int argc, char *argv[])
 {
-    uint16_t load_addr, chksum_addr;
-    uint8_t *file_data = NULL;
+    u16 load_addr, chksum_addr;
+    u8 *file_data = NULL;
     size_t file_size;
     int algo;
 

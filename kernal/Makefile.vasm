@@ -1,5 +1,6 @@
+# Makefile for use with the VARCem VASM assembler.
 
-ASM	:= P:\VARCem8\bin\vasm
+ASM	:= vasm
 AFLAGS	:= -q -p6510 -F
 
 
@@ -11,6 +12,11 @@ kernal.bin:	kernal.a65 \
 		 rs232trn.a65 save.a65 serial40.a65 tapectrl.a65 tapefile.a65 \
 		 time.a65 vectors.a65 write.a65      
 		$(ASM) $(AFLAGS) -s -l kernal.lst -o $@ $(DEFS) kernal.a65
+
+
+clean:
+		@-del *.lst 2>NUL
+		@-del *.bin 2>NUL
 
 
 # End of Makefile.

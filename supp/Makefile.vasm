@@ -1,0 +1,15 @@
+# Makefile for systems with the GCC compiler.
+
+CC	:= gcc
+CFLAGS	:= -s -O3
+
+
+cbmsum:	cbmsum.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+
+clean:
+	@-del *.exe 2>NUL
+
+
+# End of Makefile.

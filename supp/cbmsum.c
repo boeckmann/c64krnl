@@ -156,8 +156,9 @@ print_usage(void)
       "  patch <algorithm> <in-file> <load-address-hex> <chksum-address> <out-file>\n"
       "         => calculate and write checksum to ROM file\n\n"
       "algorithms:\n"
-      "   old    pre-1983 (C64 BASIC)\n"
-      "   new    after-1983 (C64 KERNAL)\n");
+      "   old    pre-1983 (C64 BASIC, KERNAL)\n"
+      "   new    after-1983\n"
+   );
 }
 
 
@@ -228,7 +229,121 @@ main(int argc, char *argv[])
 
     free(file_data);
 
+<<<<<<< HEAD
     return EXIT_SUCCESS;
+=======
+   while ( data < endp ) {
+      chksum += *data++;
+      if ( chksum > 0xff ) {
+         chksum -= 0xff;
+         carry = 1;
+      }
+      else {
+         carry = 0;
+      }
+   }
+   if ( algo == 2 ) chksum += carry;
+   return chksum;
+}
+
+static unsigned char calculate( int algo, unsigned char *data, size_t size,
+                                unsigned short addr,
+                                unsigned short chksum_addr )
+{
+   unsigned char chksum;
+
+   data[chksum_addr - addr] = '\0';
+   chksum = ((addr >> 8) - calc_chksum( algo, data, size )) & 0xff;
+   
+   printf( "check-sum byte at %04X = %02X\n", (unsigned)chksum_addr,
+                                              (unsigned)chksum);
+   return chksum;
+}
+
+static int verify( int algo, unsigned char *data, size_t size,
+                   unsigned short addr )
+{
+   unsigned char correct_chksum = addr >> 8;
+   unsigned char chksum;
+
+   chksum = calc_chksum( algo, data, size );
+   
+   printf( "data range %4X-%4X\n", (unsigned)addr,
+                                   (unsigned)((addr + size - 1)) );
+   if ( chksum == correct_chksum ) {
+      printf( "check-sum is correct: %2X\n", chksum );
+   }
+   else {
+      printf( "CHECK-SUM MISMATCH: is %2X, should be %2X\n",
+              chksum, correct_chksum);
+   }
+
+   return 1;
+}
+
+int main( int argc, char *argv[] )
+{
+   unsigned short load_addr, chksum_addr;
+   unsigned char *file_data = NULL;
+   size_t file_size;
+   int algo;
+
+   if ( argc < 5 ) goto usage;
+
+   /*  get checck-sum algorithm */
+   if ( !strcmp( argv[2], "old" ) ) algo = 1;
+   else if ( !strcmp( argv[2], "new" ) ) algo = 2;
+   else {
+      printf( "error: invalid algorithm\n" );
+      goto error;
+   }
+
+   /* get load address */
+   if ( !hexstr_to_num( argv[4], &load_addr ) ) {
+      printf( "error: illegal load address\n" );
+      goto error;
+   }
+
+   /* read ROM file */
+   file_data = load_file( argv[3], &file_size );
+   if ( !file_data ) {
+      printf( "error: can not load input file\n" );
+      goto error;
+   }
+
+   /* get check-sum address */
+   if (  !strcmp( argv[1], "calc") || !strcmp( argv[1], "patch") ) {     
+      if ( argc < 6 ) goto usage;
+      if ( !hexstr_to_num( argv[5], &chksum_addr ) || 
+         ( chksum_addr < load_addr || chksum_addr > load_addr + file_size - 1 ) ) {
+         printf( "error: illegal check-sum address\n" );
+         free( file_data );
+         goto error;
+      }
+   }
+
+   if ( !strcmp(argv[1], "verify" ) ) {
+      verify( algo, file_data, file_size, load_addr );
+   }
+   else if ( !strcmp( argv[1], "calc" ) ) {
+      calculate( algo, file_data, file_size, load_addr, chksum_addr );
+   }
+   else if ( !strcmp( argv[1], "patch" ) ) {
+      if ( argc != 7 ) goto usage;
+      file_data[chksum_addr - load_addr] =
+         calculate( algo, file_data, file_size, load_addr, chksum_addr );
+      if ( !write_file( argv[6], file_data, file_size ) ) {
+         printf( "error: can not write output file\n" );
+      }
+      printf( "patched file is %s, %u bytes written\n", argv[6], (unsigned)file_size );
+   }
+   else {
+      goto usage;
+   }
+
+   free( file_data );
+   return EXIT_SUCCESS;
+>>>>>>> c4c54f27346d80fdeb81f89e49c7c7ae17044571
 
 usage:
     print_usage();

@@ -62,9 +62,9 @@ write_file(const char *fn, const u8 *data, size_t len)
 
 
 static u8
-calc_chksum(int algo, u8 *data, size_t size)
+calc_chksum(int algo, const u8 *data, size_t size)
 {
-    u8 *endp = data + size;
+    const u8 *endp = data + size;
     u16 chksum = 0;
     u16 carry = 0;
 
@@ -100,7 +100,7 @@ calculate(int algo, u8 *data, size_t size, u16 addr, u16 chksum_addr )
 
 
 static int
-verify(int algo, u8 *data, size_t size, u16 addr)
+verify(int algo, const u8 *data, size_t size, u16 addr)
 {
     u8 correct = addr >> 8;
     u8 sum;

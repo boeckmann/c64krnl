@@ -36,7 +36,7 @@ PATCH_ADDR 	= $E4D3
 CHECKSUM	= $81	; VICE emulator depends on hard-coded check-sum
 			; for KERNAL revision detection
 
-.fill CHECKSUM_ADDR - ROM_START, $AA
+.fill CHECKSUM_ADDR - @, $AA
 
 .byte CHECKSUM		; KERNAL check-sum byte
 

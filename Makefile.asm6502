@@ -24,10 +24,10 @@ verify: roms
 	@test `$(MD5) $(MD5_ARGS) rom/basic.rom` = $(BASIC_MD5)
 
 kernal/kernal.bin: kernal/*.a65
-	@cd kernal; $(ASM) $(AFLAGS) kernal.a65 -o kernal.bin -l kernal.lst
+	@cd kernal; $(ASM) $(AFLAGS) kernal.a65 -o kernal.bin -l ../listings/kernal.lst
 
 basic/basic.bin: basic/*.a65
-	@cd basic; $(ASM) $(AFLAGS) basic.a65 -o basic.bin -l basic.lst
+	@cd basic; $(ASM) $(AFLAGS) basic.a65 -o basic.bin -l ../listings/basic.lst
 
 rom/kernal.rom: rom/kernal.a65 kernal/kernal.bin basic/basic.bin
 	@cd rom; $(ASM) $(AFLAGS) kernal.a65 -o kernal.rom VICE=$(VICE)

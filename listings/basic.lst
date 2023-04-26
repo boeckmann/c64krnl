@@ -1,4 +1,4 @@
-ASM6502        PROGRAM LISTING AND SYMBOL TABLE        DATE: 2023-04-25 14:07
+ASM6502        PROGRAM LISTING AND SYMBOL TABLE        DATE: 2023-04-26 14:54
 
 MAIN INPUT FILE: basic.a65
 
@@ -5892,51 +5892,51 @@ BLANK0 . . . . . . . . . . . . .   00      0  LBL BYTE  declare.a65:13
 ADDPRC . . . . . . . . . . . . .   01      1  VAR BYTE  declare.a65:2
 ADDPR2 . . . . . . . . . . . . .   02      2  VAR BYTE  code18.a65:9
 BUFPAG . . . . . . . . . . . . .   02      2  VAR BYTE  declare.a65:6
-STRSIZ . . . . . . . . . . . . .   03      3  VAR BYTE  declare.a65:12
 ADRAY1 . . . . . . . . . . . . .   03      3  LBL BYTE  declare.a65:14
+STRSIZ . . . . . . . . . . . . .   03      3  VAR BYTE  declare.a65:12
 ADDPR4 . . . . . . . . . . . . .   04      4  VAR BYTE  code18.a65:10
 ADRAY2 . . . . . . . . . . . . .   05      5  LBL BYTE  declare.a65:15
 CHARAC . . . . . . . . . . . . .   07      7  LBL BYTE  declare.a65:17
 INTEGR . . . . . . . . . . . . .   07      7  LBL BYTE  declare.a65:16
-ENDCHR . . . . . . . . . . . . .   08      8  LBL BYTE  declare.a65:18
 ADDPR8 . . . . . . . . . . . . .   08      8  VAR BYTE  code18.a65:11
+ENDCHR . . . . . . . . . . . . .   08      8  LBL BYTE  declare.a65:18
 TRMPOS . . . . . . . . . . . . .   09      9  LBL BYTE  declare.a65:19
-VERCK. . . . . . . . . . . . . .   0A     10  LBL BYTE  declare.a65:20
 CLMWID . . . . . . . . . . . . .   0A     10  VAR BYTE  declare.a65:9
 ERRNF. . . . . . . . . . . . . .   0A     10  VAR BYTE  token2.a65:70
+VERCK. . . . . . . . . . . . . .   0A     10  LBL BYTE  declare.a65:20
 COUNT. . . . . . . . . . . . . .   0B     11  LBL BYTE  declare.a65:21
 ERRSN. . . . . . . . . . . . . .   0B     11  VAR BYTE  token2.a65:72
-ERRRG. . . . . . . . . . . . . .   0C     12  VAR BYTE  token2.a65:74
 DIMFLG . . . . . . . . . . . . .   0C     12  LBL BYTE  declare.a65:22
+ERRRG. . . . . . . . . . . . . .   0C     12  VAR BYTE  token2.a65:74
 ERROD. . . . . . . . . . . . . .   0D     13  VAR BYTE  token2.a65:76
 VALTYP . . . . . . . . . . . . .   0D     13  LBL BYTE  declare.a65:23
-INTFLG . . . . . . . . . . . . .   0E     14  LBL BYTE  declare.a65:24
 ERRFC. . . . . . . . . . . . . .   0E     14  VAR BYTE  token2.a65:78
+INTFLG . . . . . . . . . . . . .   0E     14  LBL BYTE  declare.a65:24
 DORES. . . . . . . . . . . . . .   0F     15  LBL BYTE  declare.a65:26
 ERROV. . . . . . . . . . . . . .   0F     15  VAR BYTE  token2.a65:80
 GARBFL . . . . . . . . . . . . .   0F     15  LBL BYTE  declare.a65:25
-SUBFLG . . . . . . . . . . . . .   10     16  LBL BYTE  declare.a65:27
 ERROM. . . . . . . . . . . . . .   10     16  VAR BYTE  token2.a65:82
-INPFLG . . . . . . . . . . . . .   11     17  LBL BYTE  declare.a65:28
+SUBFLG . . . . . . . . . . . . .   10     16  LBL BYTE  declare.a65:27
 ERRUS. . . . . . . . . . . . . .   11     17  VAR BYTE  token2.a65:85
-TANSGN . . . . . . . . . . . . .   12     18  LBL BYTE  declare.a65:30
-ERRBS. . . . . . . . . . . . . .   12     18  VAR BYTE  token2.a65:87
+INPFLG . . . . . . . . . . . . .   11     17  LBL BYTE  declare.a65:28
 DOMASK . . . . . . . . . . . . .   12     18  LBL BYTE  declare.a65:29
+ERRBS. . . . . . . . . . . . . .   12     18  VAR BYTE  token2.a65:87
 FORSIZ . . . . . . . . . . . . .   12     18  VAR BYTE  token2.a65:153
+TANSGN . . . . . . . . . . . . .   12     18  LBL BYTE  declare.a65:30
 CHANNL . . . . . . . . . . . . .   13     19  LBL BYTE  declare.a65:31
 ERRDD. . . . . . . . . . . . . .   13     19  VAR BYTE  token2.a65:89
-POKER. . . . . . . . . . . . . .   14     20  LBL BYTE  declare.a65:32
-LINNUM . . . . . . . . . . . . .   14     20  LBL BYTE  declare.a65:33
 ERRDVO . . . . . . . . . . . . .   14     20  VAR BYTE  token2.a65:91
+LINNUM . . . . . . . . . . . . .   14     20  LBL BYTE  declare.a65:33
+POKER. . . . . . . . . . . . . .   14     20  LBL BYTE  declare.a65:32
 ERRID. . . . . . . . . . . . . .   15     21  VAR BYTE  token2.a65:93
-TEMPPT . . . . . . . . . . . . .   16     22  LBL BYTE  declare.a65:34
 ERRTM. . . . . . . . . . . . . .   16     22  VAR BYTE  token2.a65:95
-LASTPT . . . . . . . . . . . . .   17     23  LBL BYTE  declare.a65:35
+TEMPPT . . . . . . . . . . . . .   16     22  LBL BYTE  declare.a65:34
 ERRLS. . . . . . . . . . . . . .   17     23  VAR BYTE  token2.a65:97
+LASTPT . . . . . . . . . . . . .   17     23  LBL BYTE  declare.a65:35
 NUMLEV . . . . . . . . . . . . .   17     23  VAR BYTE  declare.a65:11
 ERRBD. . . . . . . . . . . . . .   18     24  VAR BYTE  token2.a65:99
-TEMPST . . . . . . . . . . . . .   19     25  LBL BYTE  declare.a65:36
 ERRST. . . . . . . . . . . . . .   19     25  VAR BYTE  token2.a65:101
+TEMPST . . . . . . . . . . . . .   19     25  LBL BYTE  declare.a65:36
 ERRCN. . . . . . . . . . . . . .   1A     26  VAR BYTE  token2.a65:103
 ERRUF. . . . . . . . . . . . . .   1B     27  VAR BYTE  token2.a65:105
 ERVFY. . . . . . . . . . . . . .   1C     28  VAR BYTE  token2.a65:107
@@ -5948,9 +5948,9 @@ INDEX1 . . . . . . . . . . . . .   22     34  LBL BYTE  declare.a65:38
 INDEX2 . . . . . . . . . . . . .   24     36  LBL BYTE  declare.a65:39
 RESHO. . . . . . . . . . . . . .   26     38  LBL BYTE  declare.a65:40
 RESMOH . . . . . . . . . . . . .   27     39  LBL BYTE  declare.a65:41
-RESMO. . . . . . . . . . . . . .   28     40  LBL BYTE  declare.a65:43
 ADDEND . . . . . . . . . . . . .   28     40  LBL BYTE  declare.a65:42
 LINLEN . . . . . . . . . . . . .   28     40  VAR BYTE  declare.a65:4
+RESMO. . . . . . . . . . . . . .   28     40  LBL BYTE  declare.a65:43
 RESLO. . . . . . . . . . . . . .   29     41  LBL BYTE  declare.a65:44
 TXTTAB . . . . . . . . . . . . .   2B     43  LBL BYTE  declare.a65:46
 VARTAB . . . . . . . . . . . . .   2D     45  LBL BYTE  declare.a65:47
@@ -5968,16 +5968,16 @@ INPPTR . . . . . . . . . . . . .   43     67  LBL BYTE  declare.a65:58
 VARNAM . . . . . . . . . . . . .   45     69  LBL BYTE  declare.a65:59
 FDECPT . . . . . . . . . . . . .   47     71  LBL BYTE  declare.a65:60
 VARPNT . . . . . . . . . . . . .   47     71  LBL BYTE  declare.a65:61
-LSTPNT . . . . . . . . . . . . .   49     73  LBL BYTE  declare.a65:62
 ANDMSK . . . . . . . . . . . . .   49     73  LBL BYTE  declare.a65:63
 FORPNT . . . . . . . . . . . . .   49     73  LBL BYTE  declare.a65:64
+LSTPNT . . . . . . . . . . . . .   49     73  LBL BYTE  declare.a65:62
 EORMSK . . . . . . . . . . . . .   4A     74  VAR BYTE  declare.a65:65
-VARTXT . . . . . . . . . . . . .   4B     75  LBL BYTE  declare.a65:66
 OPPTR. . . . . . . . . . . . . .   4B     75  LBL BYTE  declare.a65:67
+VARTXT . . . . . . . . . . . . .   4B     75  LBL BYTE  declare.a65:66
 OPMASK . . . . . . . . . . . . .   4D     77  LBL BYTE  declare.a65:68
+DEFPNT . . . . . . . . . . . . .   4E     78  LBL BYTE  declare.a65:71
 GRBPNT . . . . . . . . . . . . .   4E     78  LBL BYTE  declare.a65:69
 TEMPF3 . . . . . . . . . . . . .   4E     78  LBL BYTE  declare.a65:70
-DEFPNT . . . . . . . . . . . . .   4E     78  LBL BYTE  declare.a65:71
 DSCPNT . . . . . . . . . . . . .   50     80  LBL BYTE  declare.a65:72
 FOUR6. . . . . . . . . . . . . .   53     83  LBL BYTE  declare.a65:74
 JMPER. . . . . . . . . . . . . .   54     84  LBL BYTE  declare.a65:75
@@ -5995,8 +5995,8 @@ TENEXP . . . . . . . . . . . . .   5E     94  VAR BYTE  declare.a65:90
 DPTFLG . . . . . . . . . . . . .   5F     95  LBL BYTE  declare.a65:87
 GRBTOP . . . . . . . . . . . . .   5F     95  LBL BYTE  declare.a65:86
 LOWTR. . . . . . . . . . . . . .   5F     95  LBL BYTE  declare.a65:88
-EXPSGN . . . . . . . . . . . . .   60     96  LBL BYTE  declare.a65:89
 EPSGN. . . . . . . . . . . . . .   60     96  VAR BYTE  declare.a65:91
+EXPSGN . . . . . . . . . . . . .   60     96  LBL BYTE  declare.a65:89
 DSCTMP . . . . . . . . . . . . .   61     97  LBL BYTE  declare.a65:92
 FAC. . . . . . . . . . . . . . .   61     97  LBL BYTE  declare.a65:93
 FACEXP . . . . . . . . . . . . .   61     97  LBL BYTE  declare.a65:94
@@ -6006,8 +6006,8 @@ FACMO. . . . . . . . . . . . . .   64    100  LBL BYTE  declare.a65:98
 INDICE . . . . . . . . . . . . .   64    100  LBL BYTE  declare.a65:97
 FACLO. . . . . . . . . . . . . .   65    101  LBL BYTE  declare.a65:99
 FACSGN . . . . . . . . . . . . .   66    102  LBL BYTE  declare.a65:100
-SGNFLG . . . . . . . . . . . . .   67    103  LBL BYTE  declare.a65:102
 DEGREE . . . . . . . . . . . . .   67    103  LBL BYTE  declare.a65:101
+SGNFLG . . . . . . . . . . . . .   67    103  LBL BYTE  declare.a65:102
 BITS . . . . . . . . . . . . . .   68    104  LBL BYTE  declare.a65:103
 ARGEXP . . . . . . . . . . . . .   69    105  LBL BYTE  declare.a65:104
 ARGHO. . . . . . . . . . . . . .   6A    106  LBL BYTE  declare.a65:105
@@ -6015,15 +6015,15 @@ ARGMOH . . . . . . . . . . . . .   6B    107  LBL BYTE  declare.a65:106
 ARGMO. . . . . . . . . . . . . .   6C    108  LBL BYTE  declare.a65:107
 ARGLO. . . . . . . . . . . . . .   6D    109  LBL BYTE  declare.a65:108
 ARGSGN . . . . . . . . . . . . .   6E    110  LBL BYTE  declare.a65:109
-STRNGI . . . . . . . . . . . . .   6F    111  LBL BYTE  declare.a65:110
-STRNG1 . . . . . . . . . . . . .   6F    111  VAR BYTE  declare.a65:127
 ARISGN . . . . . . . . . . . . .   6F    111  LBL BYTE  declare.a65:111
+STRNG1 . . . . . . . . . . . . .   6F    111  VAR BYTE  declare.a65:127
+STRNGI . . . . . . . . . . . . .   6F    111  LBL BYTE  declare.a65:110
 FACOV. . . . . . . . . . . . . .   70    112  LBL BYTE  declare.a65:112
-FBUFPT . . . . . . . . . . . . .   71    113  LBL BYTE  declare.a65:117
 BUFPTR . . . . . . . . . . . . .   71    113  LBL BYTE  declare.a65:113
-STRNG2 . . . . . . . . . . . . .   71    113  LBL BYTE  declare.a65:114
 CURTOL . . . . . . . . . . . . .   71    113  LBL BYTE  declare.a65:116
+FBUFPT . . . . . . . . . . . . .   71    113  LBL BYTE  declare.a65:117
 POLYPT . . . . . . . . . . . . .   71    113  LBL BYTE  declare.a65:115
+STRNG2 . . . . . . . . . . . . .   71    113  LBL BYTE  declare.a65:114
 CHRGET . . . . . . . . . . . . .   73    115  LBL BYTE  declare.a65:118
 CHRGOT . . . . . . . . . . . . .   79    121  LBL BYTE  declare.a65:119
 TXTPTR . . . . . . . . . . . . .   7A    122  LBL BYTE  declare.a65:120
@@ -6059,8 +6059,8 @@ PI . . . . . . . . . . . . . . .   FF    255  VAR BYTE  declare.a65:10
 FBUFFR . . . . . . . . . . . . . 0100    256  LBL WORD  declare.a65:126
 STKEND . . . . . . . . . . . . . 01FB    507  VAR WORD  declare.a65:8
 ZZ1. . . . . . . . . . . . . . . 01FF    511  VAR WORD  code2.a65:78
-ZZ5. . . . . . . . . . . . . . . 01FF    511  VAR WORD  code6.a65:106
 ZZ4. . . . . . . . . . . . . . . 01FF    511  VAR WORD  code7.a65:136
+ZZ5. . . . . . . . . . . . . . . 01FF    511  VAR WORD  code6.a65:106
 BUF. . . . . . . . . . . . . . . 0200    512  VAR WORD  declare.a65:7
 BUFOFS . . . . . . . . . . . . . 0200    512  VAR WORD  code2.a65:2
 ZZ2. . . . . . . . . . . . . . . 0201    513  VAR WORD  code7.a65:60

@@ -1,8 +1,10 @@
-ASM6502        PROGRAM LISTING AND SYMBOL TABLE        DATE: 2023-04-25 14:07
+ASM6502        PROGRAM LISTING AND SYMBOL TABLE        DATE: 2023-04-26 14:54
 
 MAIN INPUT FILE: kernal.a65
 
  Line# FPos PC    Code           Source
+    1:                          ; COMMODORE C64 KERNAL V3 ported to the ASM6502 assembler
+    2:                          
  FILE: disclaim.a65
     1:                          ;****************************************
     2:                          ;*                                      *
@@ -337,33 +339,50 @@ MAIN INPUT FILE: kernal.a65
   288:                          ;RSR 8/22/80 ADD RS-232 ROUTINES
   289:                          ;RSR 8/24/80 ADD OPEN VARIABLES
   290:                          ;RSR 8/29/80 ADD BAUD SPACE MOVE RS232 TO Z-PAGE
-  291:                          ;RSR 9/2/80 ADD SCREEN EDITOR VARS&CON
+  291:                          ;RSR 9/2/80 ADD SCREEN EDITOR VARS&CON
   292:                          ;RSR 12/7/81 MODIFY FOR VIC-40
- FILE: kernal.a65
-    3:                          
- FILE: config.a65
-    1:                          ; adjust values in this file to customize KERNAL
-    2:                          
-    3:                          FLAG_RRBY     = 1 ; put "RRBY" at $FFF6, these are engineers initials
-    4:                          		  ; if 0 $FFF6-$FFF9 is filled with $AA
-    5:                          FLAG_FIX_FF7E = 0 ; this fix for reasons unknown to me did not make it
-    6:                          		  ; into the official V3 KERNAL ROMs, so disabled by default
-    7:                          
-    8:                          FCOLOR = 14	  ; frame color (default: 14)
-    9:                          BCOLOR = 6	  ; background color (default: 6)
-   10:                          TCOLOR = 14	  ; text color (default: 14)
  FILE: kernal.a65
     5:                          
     6:                          ROM_START    = $E000
     7:                          KERNAL_START = $E500
-    8:                          PATCH_SIZE   = 45
-    9:                          
-   10:                          .org ROM_START	; KERNAL ROM start
+    8:                          
+    9:                          ; ---------------------------------------------------------------------------
+   10:                          ; adjust values below to customize KERNAL
    11:                          
-   12:                          ; the following fill bytes must be replaced by BASIC code from basic.bin
-   13:                          ; to get a working KERNAL ROM 
-   14: 0000 E000  AA AA AA ...  .fill KERNAL_START - ROM_START - PATCH_SIZE, $AA
-   15:                          
+   12:                          FLAG_RRBY     = 1 ; put "RRBY" at $FFF6, these are engineers initials
+   13:                          		  ; if 0 $FFF6-$FFF9 is filled with $AA
+   14:                          FLAG_FIX_FF7E = 0 ; this fix for reasons unknown to me did not make it
+   15:                          		  ; into the official V3 KERNAL ROMs, so disabled by default
+   16:                          
+   17:                          FCOLOR = 14	  ; frame color (default: 14)
+   18:                          BCOLOR = 6	  ; background color (default: 6)
+   19:                          TCOLOR = 14	  ; text color (default: 14)
+   20:                          
+   21:                          
+   22:                          ; ---------------------------------------------------------------------------
+   23:                          ; rest of BASIC, checksum and KERNAL patches
+   24:                          
+   25:                          ; the following contains a placeholder for the rest of the BASIC. It does not
+   26:                          ; fit into its own ROM. BASIC code is in $E000-$E4B7.
+   27:                          ; KERNAL check-sum is embedded in the BASIC range at $E4AC.
+   28:                          ; From $E4B8 to $E4D2, there is unused space left filled with $AA.
+   29:                          ; The patches start at $E4D3.
+   30:                          
+   31:                          .org ROM_START	; KERNAL ROM start
+   32:                          
+   33:                          CHECKSUM_ADDR	= $E4AC
+   34:                          PATCH_ADDR 	= $E4D3
+   35:                          
+   36:                          CHECKSUM	= $81	; VICE emulator depends on hard-coded check-sum
+   37:                          			; for KERNAL revision detection
+   38:                          
+   39: 0000 E000  AA AA AA ...  .fill CHECKSUM_ADDR - @, $AA
+   40:                          
+   41: 04AC E4AC  81            .byte CHECKSUM		; KERNAL check-sum byte
+   42:                          
+   43: 04AD E4AD  AA AA AA ...  .fill PATCH_ADDR - @, $AA
+   44:                          
+   45:                          ; KERNAL patches
  FILE: patches.a65
     1:                          ; Kernel Version V3 patches located before memory location $E500
     2:                          
@@ -406,11 +425,12 @@ MAIN INPUT FILE: kernal.a65
    39: 04FC E4FC  AE 00         	.WORD 274-CBIT   ;1800 BAUD
    40: 04FE E4FE  69 00         	.WORD 205-CBIT   ;2400 BAUD
  FILE: kernal.a65
-   17:                          
-   18:                          .if @ != KERNAL_START
-   19-                          	.echo "KERNAL MUST start at ", [$]KERNAL_START
-   20:                          .endif
-   21:                          
+   47:                          
+   48:                          ; ---------------------------------------------------------------------------
+   49:                          ; START OF KERNAL
+   50:                          
+   51:                          .assert @ == KERNAL_START, "KERNAL MUST start at ", [$]KERNAL_START
+   52:                          
  FILE: editor1.a65
     1:                          
     2:                          MAXCHR=80
@@ -1027,7 +1047,7 @@ MAIN INPUT FILE: kernal.a65
   613:                          ; RSR MODIFY FOR VIC-40 SYSTEM
   614:                          ; RSR 12/31/81 ADD 8 MORE COLORS
  FILE: kernal.a65
-   23:                          ;.include "CONKAT (JAPAN CONVERSION TABLES)
+   54:                          ;.include "conkat.a65" ; (JAPAN CONVERSION TABLES)
  FILE: editor2.a65
     1:                          
     2:                          ;SCREEN SCROLL ROUTINE
@@ -5308,7 +5328,7 @@ MAIN INPUT FILE: kernal.a65
    52: 1FFC FFFC  E2 FC         	.WORD START      ;INITIALIZATION CODE
    53: 1FFE FFFE  48 FF         	.WORD PULS       ;INTERRUPT HANDLER
  FILE: kernal.a65
-   48:                          
+   79:                          
 
 
 S Y M B O L S   B Y   N A M E
@@ -5337,7 +5357,7 @@ BASZPT . . . . . . . . . . . . .   FF    255  LBL BYTE  declare.a65:116
 BAUDO. . . . . . . . . . . . . . FEC2  65218  LBL WORD  rs232nmi.a65:99
 BAUDOF . . . . . . . . . . . . . 0299    665  LBL WORD  declare.a65:158
 BAUDOP . . . . . . . . . . . . . E4EC  58604  LBL WORD  patches.a65:31
-BCOLOR . . . . . . . . . . . . .   06      6  VAR BYTE  config.a65:9
+BCOLOR . . . . . . . . . . . . .   06      6  VAR BYTE  kernal.a65:18
 BDF. . . . . . . . . . . . . . .   02      2  VAR BYTE  declare.a65:272
 BDFH . . . . . . . . . . . . . .   04      4  VAR BYTE  declare.a65:274
 BIT010 . . . . . . . . . . . . . EF54  61268  LBL WORD  rs232trn.a65:136
@@ -5393,6 +5413,8 @@ CASOUT . . . . . . . . . . . . . F1DD  61917  LBL WORD  chanio.a65:160
 CASTON . . . . . . . . . . . . . 02A2    674  LBL WORD  declare.a65:184
 CBINV. . . . . . . . . . . . . . 0316    790  LBL WORD  declare.a65:193
 CBIT . . . . . . . . . . . . . . 0064    100  VAR WORD  rs232nmi.a65:113
+CHECKSUM . . . . . . . . . . . .   81    129  VAR BYTE  kernal.a65:36
+CHECKSUM_ADDR. . . . . . . . . . E4AC  58540  VAR WORD  kernal.a65:33
 CHK1A. . . . . . . . . . . . . . E8CD  59597  LBL WORD  editor1.a65:598
 CHK1B. . . . . . . . . . . . . . E8D6  59606  LBL WORD  editor1.a65:604
 CHKBAK . . . . . . . . . . . . . E8A1  59553  LBL WORD  editor1.a65:564
@@ -5557,14 +5579,14 @@ FAH50. . . . . . . . . . . . . . F74B  63307  LBL WORD  tapefile.a65:34
 FAH55. . . . . . . . . . . . . . F757  63319  LBL WORD  tapefile.a65:44
 FAH56. . . . . . . . . . . . . . F761  63329  LBL WORD  tapefile.a65:50
 FAT. . . . . . . . . . . . . . . 0263    611  LBL WORD  declare.a65:126
-FCOLOR . . . . . . . . . . . . .   0E     14  VAR BYTE  config.a65:8
+FCOLOR . . . . . . . . . . . . .   0E     14  VAR BYTE  kernal.a65:17
 FINDST . . . . . . . . . . . . . E6ED  59117  LBL WORD  editor1.a65:325
 FINPUT . . . . . . . . . . . . . E591  58769  LBL WORD  editor1.a65:123
 FINPUX . . . . . . . . . . . . . E598  58776  LBL WORD  editor1.a65:126
 FINX . . . . . . . . . . . . . . E6F4  59124  LBL WORD  editor1.a65:330
 FIRT . . . . . . . . . . . . . .   A4    164  LBL BYTE  declare.a65:43
-FLAG_FIX_FF7E. . . . . . . . . .   00      0  VAR BYTE  config.a65:5
-FLAG_RRBY. . . . . . . . . . . .   01      1  VAR BYTE  config.a65:3
+FLAG_FIX_FF7E. . . . . . . . . .   00      0  VAR BYTE  kernal.a65:14
+FLAG_RRBY. . . . . . . . . . . .   01      1  VAR BYTE  kernal.a65:12
 FLGS . . . . . . . . . . . . . .   04      4  LBL BYTE  declare.a65:9
 FLNMI. . . . . . . . . . . . . . FF07  65287  LBL WORD  rs232nmi.a65:151
 FNADR. . . . . . . . . . . . . .   BB    187  LBL BYTE  declare.a65:74
@@ -5897,7 +5919,7 @@ OUTHRE . . . . . . . . . . . . . EC5B  60507  LBL WORD  editor3.a65:93
 P0010. . . . . . . . . . . . . . FF5E  65374  LBL WORD  irqfile.a65:27
 PALNTS . . . . . . . . . . . . . 02A6    678  LBL WORD  declare.a65:188
 PANIC. . . . . . . . . . . . . . E5A0  58784  LBL WORD  editor1.a65:134
-PATCH_SIZE . . . . . . . . . . .   2D     45  VAR BYTE  kernal.a65:8
+PATCH_ADDR . . . . . . . . . . . E4D3  58579  VAR WORD  kernal.a65:34
 PCH. . . . . . . . . . . . . . .   02      2  LBL BYTE  declare.a65:7
 PCINT. . . . . . . . . . . . . . FF5B  65371  LBL WORD  irqfile.a65:26
 PCL. . . . . . . . . . . . . . .   03      3  LBL BYTE  declare.a65:8
@@ -6139,7 +6161,7 @@ TBLA0E . . . . . . . . . . . . . FD15  64789  LBL WORD  init.a65:42
 TBLA0R . . . . . . . . . . . . . FD10  64784  LBL WORD  init.a65:41
 TBLX . . . . . . . . . . . . . .   D6    214  LBL BYTE  declare.a65:106
 TBUFFR . . . . . . . . . . . . . 033C    828  LBL WORD  declare.a65:210
-TCOLOR . . . . . . . . . . . . .   0E     14  VAR BYTE  config.a65:10
+TCOLOR . . . . . . . . . . . . .   0E     14  VAR BYTE  kernal.a65:19
 TEMP . . . . . . . . . . . . . .   B1    177  LBL BYTE  declare.a65:62
 TH20 . . . . . . . . . . . . . . F7A5  63397  LBL WORD  tapefile.a65:119
 TH30 . . . . . . . . . . . . . . F7B7  63415  LBL WORD  tapefile.a65:131
@@ -6236,42 +6258,42 @@ ZZZ. . . . . . . . . . . . . . . F7D0  63440  LBL WORD  tapefile.a65:159
 S Y M B O L S   B Y   V A L U E
 
 NAME                              HEX    DEC  SYM TYPE  WHERE
-FLAG_FIX_FF7E. . . . . . . . . .   00      0  VAR BYTE  config.a65:5
 D6510. . . . . . . . . . . . . .   00      0  LBL BYTE  declare.a65:3
+FLAG_FIX_FF7E. . . . . . . . . .   00      0  VAR BYTE  kernal.a65:14
+BLF. . . . . . . . . . . . . . .   01      1  VAR BYTE  declare.a65:271
+FLAG_RRBY. . . . . . . . . . . .   01      1  VAR BYTE  kernal.a65:12
 R6510. . . . . . . . . . . . . .   01      1  LBL BYTE  declare.a65:4
 WHITE. . . . . . . . . . . . . .   01      1  VAR BYTE  declare.a65:282
-FLAG_RRBY. . . . . . . . . . . .   01      1  VAR BYTE  config.a65:3
-BLF. . . . . . . . . . . . . . .   01      1  VAR BYTE  declare.a65:271
-PCH. . . . . . . . . . . . . . .   02      2  LBL BYTE  declare.a65:7
-NWRAP. . . . . . . . . . . . . .   02      2  VAR BYTE  editor1.a65:3
 BDF. . . . . . . . . . . . . . .   02      2  VAR BYTE  declare.a65:272
-PLF. . . . . . . . . . . . . . .   03      3  VAR BYTE  declare.a65:273
+NWRAP. . . . . . . . . . . . . .   02      2  VAR BYTE  editor1.a65:3
+PCH. . . . . . . . . . . . . . .   02      2  LBL BYTE  declare.a65:7
 PCL. . . . . . . . . . . . . . .   03      3  LBL BYTE  declare.a65:8
+PLF. . . . . . . . . . . . . . .   03      3  VAR BYTE  declare.a65:273
 BDFH . . . . . . . . . . . . . .   04      4  VAR BYTE  declare.a65:274
-SBERR. . . . . . . . . . . . . .   04      4  VAR BYTE  read.a65:227
 FLGS . . . . . . . . . . . . . .   04      4  LBL BYTE  declare.a65:9
+SBERR. . . . . . . . . . . . . .   04      4  VAR BYTE  read.a65:227
 ACC. . . . . . . . . . . . . . .   05      5  LBL BYTE  declare.a65:10
 EOT. . . . . . . . . . . . . . .   05      5  VAR BYTE  declare.a65:270
-BCOLOR . . . . . . . . . . . . .   06      6  VAR BYTE  config.a65:9
-XR . . . . . . . . . . . . . . .   06      6  LBL BYTE  declare.a65:11
+BCOLOR . . . . . . . . . . . . .   06      6  VAR BYTE  kernal.a65:18
 BLUE . . . . . . . . . . . . . .   06      6  VAR BYTE  declare.a65:283
+XR . . . . . . . . . . . . . . .   06      6  LBL BYTE  declare.a65:11
 YR . . . . . . . . . . . . . . .   07      7  LBL BYTE  declare.a65:12
 LBERR. . . . . . . . . . . . . .   08      8  VAR BYTE  read.a65:228
 SP . . . . . . . . . . . . . . .   08      8  LBL BYTE  declare.a65:13
 INVH . . . . . . . . . . . . . .   09      9  LBL BYTE  declare.a65:14
 INVL . . . . . . . . . . . . . .   0A     10  LBL BYTE  declare.a65:15
 CR . . . . . . . . . . . . . . .   0D     13  VAR BYTE  declare.a65:284
-TCOLOR . . . . . . . . . . . . .   0E     14  VAR BYTE  config.a65:10
-FCOLOR . . . . . . . . . . . . .   0E     14  VAR BYTE  config.a65:8
+FCOLOR . . . . . . . . . . . . .   0E     14  VAR BYTE  kernal.a65:17
+TCOLOR . . . . . . . . . . . . .   0E     14  VAR BYTE  kernal.a65:19
 SPERR. . . . . . . . . . . . . . 0010     16  VAR WORD  read.a65:225
-TIMRB. . . . . . . . . . . . . .   19     25  VAR BYTE  declare.a65:266
 NLINES . . . . . . . . . . . . .   19     25  VAR BYTE  declare.a65:281
+TIMRB. . . . . . . . . . . . . .   19     25  VAR BYTE  declare.a65:266
 CKERR. . . . . . . . . . . . . .   20     32  VAR BYTE  read.a65:226
 LLEN . . . . . . . . . . . . . .   28     40  VAR BYTE  declare.a65:279
-PATCH_SIZE . . . . . . . . . . .   2D     45  VAR BYTE  kernal.a65:8
 LLEN2. . . . . . . . . . . . . .   50     80  VAR BYTE  declare.a65:280
 MAXCHR . . . . . . . . . . . . .   50     80  VAR BYTE  editor1.a65:2
 CBIT . . . . . . . . . . . . . . 0064    100  VAR WORD  rs232nmi.a65:113
+CHECKSUM . . . . . . . . . . . .   81    129  VAR BYTE  kernal.a65:36
 STATUS . . . . . . . . . . . . .   90    144  LBL BYTE  declare.a65:18
 STKEY. . . . . . . . . . . . . .   91    145  LBL BYTE  declare.a65:20
 SVXT . . . . . . . . . . . . . .   92    146  LBL BYTE  declare.a65:21
@@ -6288,27 +6310,27 @@ DPSW . . . . . . . . . . . . . .   9C    156  LBL BYTE  declare.a65:31
 MSGFLG . . . . . . . . . . . . .   9D    157  LBL BYTE  declare.a65:32
 PTR1 . . . . . . . . . . . . . .   9E    158  LBL BYTE  declare.a65:33
 T1 . . . . . . . . . . . . . . .   9E    158  LBL BYTE  declare.a65:34
-TMPC . . . . . . . . . . . . . .   9F    159  LBL BYTE  declare.a65:35
 PTR2 . . . . . . . . . . . . . .   9F    159  LBL BYTE  declare.a65:36
 T2 . . . . . . . . . . . . . . .   9F    159  LBL BYTE  declare.a65:37
+TMPC . . . . . . . . . . . . . .   9F    159  LBL BYTE  declare.a65:35
 TIME . . . . . . . . . . . . . .   A0    160  LBL BYTE  declare.a65:38
 PCNTR. . . . . . . . . . . . . .   A3    163  LBL BYTE  declare.a65:40
 R2D2 . . . . . . . . . . . . . .   A3    163  LBL BYTE  declare.a65:39
-FIRT . . . . . . . . . . . . . .   A4    164  LBL BYTE  declare.a65:43
 BSOUR1 . . . . . . . . . . . . .   A4    164  LBL BYTE  declare.a65:42
-COUNT. . . . . . . . . . . . . .   A5    165  LBL BYTE  declare.a65:44
+FIRT . . . . . . . . . . . . . .   A4    164  LBL BYTE  declare.a65:43
 CNTDN. . . . . . . . . . . . . .   A5    165  LBL BYTE  declare.a65:45
+COUNT. . . . . . . . . . . . . .   A5    165  LBL BYTE  declare.a65:44
 BUFPT. . . . . . . . . . . . . .   A6    166  LBL BYTE  declare.a65:46
-SHCNL. . . . . . . . . . . . . .   A7    167  LBL BYTE  declare.a65:48
 INBIT. . . . . . . . . . . . . .   A7    167  LBL BYTE  declare.a65:47
-RER. . . . . . . . . . . . . . .   A8    168  LBL BYTE  declare.a65:50
+SHCNL. . . . . . . . . . . . . .   A7    167  LBL BYTE  declare.a65:48
 BITCI. . . . . . . . . . . . . .   A8    168  LBL BYTE  declare.a65:49
+RER. . . . . . . . . . . . . . .   A8    168  LBL BYTE  declare.a65:50
 REZ. . . . . . . . . . . . . . .   A9    169  LBL BYTE  declare.a65:52
 RINONE . . . . . . . . . . . . .   A9    169  LBL BYTE  declare.a65:51
 RDFLG. . . . . . . . . . . . . .   AA    170  LBL BYTE  declare.a65:54
 RIDATA . . . . . . . . . . . . .   AA    170  LBL BYTE  declare.a65:53
-SHCNH. . . . . . . . . . . . . .   AB    171  LBL BYTE  declare.a65:56
 RIPRTY . . . . . . . . . . . . .   AB    171  LBL BYTE  declare.a65:55
+SHCNH. . . . . . . . . . . . . .   AB    171  LBL BYTE  declare.a65:56
 SAL. . . . . . . . . . . . . . .   AC    172  LBL BYTE  declare.a65:57
 SAH. . . . . . . . . . . . . . .   AD    173  LBL BYTE  declare.a65:58
 EAL. . . . . . . . . . . . . . .   AE    174  LBL BYTE  declare.a65:59
@@ -6316,12 +6338,12 @@ EAH. . . . . . . . . . . . . . .   AF    175  LBL BYTE  declare.a65:60
 CMP0 . . . . . . . . . . . . . .   B0    176  LBL BYTE  declare.a65:61
 TEMP . . . . . . . . . . . . . .   B1    177  LBL BYTE  declare.a65:62
 TAPE1. . . . . . . . . . . . . .   B2    178  LBL BYTE  declare.a65:63
-SNSW1. . . . . . . . . . . . . .   B4    180  LBL BYTE  declare.a65:65
 BITTS. . . . . . . . . . . . . .   B4    180  LBL BYTE  declare.a65:64
+SNSW1. . . . . . . . . . . . . .   B4    180  LBL BYTE  declare.a65:65
 DIFF . . . . . . . . . . . . . .   B5    181  LBL BYTE  declare.a65:67
 NXTBIT . . . . . . . . . . . . .   B5    181  LBL BYTE  declare.a65:66
-RODATA . . . . . . . . . . . . .   B6    182  LBL BYTE  declare.a65:68
 PRP. . . . . . . . . . . . . . .   B6    182  LBL BYTE  declare.a65:69
+RODATA . . . . . . . . . . . . .   B6    182  LBL BYTE  declare.a65:68
 FNLEN. . . . . . . . . . . . . .   B7    183  LBL BYTE  declare.a65:70
 LA . . . . . . . . . . . . . . .   B8    184  LBL BYTE  declare.a65:71
 SA . . . . . . . . . . . . . . .   B9    185  LBL BYTE  declare.a65:72
@@ -6331,8 +6353,8 @@ OCHAR. . . . . . . . . . . . . .   BD    189  LBL BYTE  declare.a65:76
 ROPRTY . . . . . . . . . . . . .   BD    189  LBL BYTE  declare.a65:75
 FSBLK. . . . . . . . . . . . . .   BE    190  LBL BYTE  declare.a65:77
 MYCH . . . . . . . . . . . . . .   BF    191  LBL BYTE  declare.a65:78
-CAS1 . . . . . . . . . . . . . .   C0    192  LBL BYTE  declare.a65:79
 BUFSZ. . . . . . . . . . . . . .   C0    192  VAR BYTE  declare.a65:275
+CAS1 . . . . . . . . . . . . . .   C0    192  LBL BYTE  declare.a65:79
 STAL . . . . . . . . . . . . . .   C1    193  LBL BYTE  declare.a65:81
 TMP0 . . . . . . . . . . . . . .   C1    193  LBL BYTE  declare.a65:80
 STAH . . . . . . . . . . . . . .   C2    194  LBL BYTE  declare.a65:82
@@ -6453,8 +6475,8 @@ SIDREG . . . . . . . . . . . . . D400  54272  VAR WORD  declare.a65:223
 VICCOL . . . . . . . . . . . . . D800  55296  LBL WORD  declare.a65:226
 COLM . . . . . . . . . . . . . . DC00  56320  LBL WORD  declare.a65:229
 D1PRA. . . . . . . . . . . . . . DC00  56320  LBL WORD  declare.a65:230
-ROWS . . . . . . . . . . . . . . DC01  56321  LBL WORD  declare.a65:231
 D1PRB. . . . . . . . . . . . . . DC01  56321  LBL WORD  declare.a65:232
+ROWS . . . . . . . . . . . . . . DC01  56321  LBL WORD  declare.a65:231
 D1DDRA . . . . . . . . . . . . . DC02  56322  LBL WORD  declare.a65:233
 D1DDRB . . . . . . . . . . . . . DC03  56323  LBL WORD  declare.a65:234
 D1T1L. . . . . . . . . . . . . . DC04  56324  LBL WORD  declare.a65:235
@@ -6486,6 +6508,8 @@ D2ICR. . . . . . . . . . . . . . DD0D  56589  LBL WORD  declare.a65:262
 D2CRA. . . . . . . . . . . . . . DD0E  56590  LBL WORD  declare.a65:263
 D2CRB. . . . . . . . . . . . . . DD0F  56591  LBL WORD  declare.a65:264
 ROM_START. . . . . . . . . . . . E000  57344  VAR WORD  kernal.a65:6
+CHECKSUM_ADDR. . . . . . . . . . E4AC  58540  VAR WORD  kernal.a65:33
+PATCH_ADDR . . . . . . . . . . . E4D3  58579  VAR WORD  kernal.a65:34
 PRTYP. . . . . . . . . . . . . . E4D3  58579  LBL WORD  patches.a65:5
 CPATCH . . . . . . . . . . . . . E4DA  58586  LBL WORD  patches.a65:12
 FPATCH . . . . . . . . . . . . . E4E0  58592  LBL WORD  patches.a65:19
@@ -6575,8 +6599,8 @@ CURS10 . . . . . . . . . . . . . E7C0  59328  LBL WORD  editor1.a65:441
 GOTDWN . . . . . . . . . . . . . E7C8  59336  LBL WORD  editor1.a65:445
 JPL3 . . . . . . . . . . . . . . E7CB  59339  LBL WORD  editor1.a65:446
 COLR1. . . . . . . . . . . . . . E7CE  59342  LBL WORD  editor1.a65:447
-NXTX . . . . . . . . . . . . . . E7D4  59348  LBL WORD  editor1.a65:455
 KEEPIT . . . . . . . . . . . . . E7D4  59348  LBL WORD  editor1.a65:456
+NXTX . . . . . . . . . . . . . . E7D4  59348  LBL WORD  editor1.a65:455
 NXTX1. . . . . . . . . . . . . . E7DC  59356  LBL WORD  editor1.a65:461
 NXTXA. . . . . . . . . . . . . . E7DC  59356  LBL WORD  editor1.a65:462
 UHUH . . . . . . . . . . . . . . E7E3  59363  LBL WORD  editor1.a65:466
@@ -7093,8 +7117,8 @@ VECTOR . . . . . . . . . . . . . FD1A  64794  LBL WORD  init.a65:52
 MOVOS1 . . . . . . . . . . . . . FD20  64800  LBL WORD  init.a65:55
 MOVOS2 . . . . . . . . . . . . . FD27  64807  LBL WORD  init.a65:58
 VECTSS . . . . . . . . . . . . . FD30  64816  LBL WORD  init.a65:64
-VECTSE . . . . . . . . . . . . . FD50  64848  LBL WORD  init.a65:70
 RAMTAS . . . . . . . . . . . . . FD50  64848  LBL WORD  init.a65:74
+VECTSE . . . . . . . . . . . . . FD50  64848  LBL WORD  init.a65:70
 RAMTZ0 . . . . . . . . . . . . . FD53  64851  LBL WORD  init.a65:76
 RAMTBT . . . . . . . . . . . . . FD67  64871  LBL WORD  init.a65:91
 RAMTZ1 . . . . . . . . . . . . . FD6C  64876  LBL WORD  init.a65:96

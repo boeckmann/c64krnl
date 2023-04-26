@@ -1,26 +1,57 @@
+; COMMODORE C64 KERNAL V3 ported to the ASM6502 assembler
+
 .include "disclaim.a65"
 .include "declare.a65"
 
-.include "config.a65"	; edit to customize KERNAL
-
 ROM_START    = $E000
 KERNAL_START = $E500
-PATCH_SIZE   = 45
+
+; ---------------------------------------------------------------------------
+; adjust values below to customize KERNAL
+
+FLAG_RRBY     = 1 ; put "RRBY" at $FFF6, these are engineers initials
+		  ; if 0 $FFF6-$FFF9 is filled with $AA
+FLAG_FIX_FF7E = 0 ; this fix for reasons unknown to me did not make it
+		  ; into the official V3 KERNAL ROMs, so disabled by default
+
+FCOLOR = 14	  ; frame color (default: 14)
+BCOLOR = 6	  ; background color (default: 6)
+TCOLOR = 14	  ; text color (default: 14)
+
+
+; ---------------------------------------------------------------------------
+; rest of BASIC, checksum and KERNAL patches
+
+; the following contains a placeholder for the rest of the BASIC. It does not
+; fit into its own ROM. BASIC code is in $E000-$E4B7.
+; KERNAL check-sum is embedded in the BASIC range at $E4AC.
+; From $E4B8 to $E4D2, there is unused space left filled with $AA.
+; The patches start at $E4D3.
 
 .org ROM_START	; KERNAL ROM start
 
-; the following fill bytes must be replaced by BASIC code from basic.bin
-; to get a working KERNAL ROM 
-.fill KERNAL_START - ROM_START - PATCH_SIZE, $AA
+CHECKSUM_ADDR	= $E4AC
+PATCH_ADDR 	= $E4D3
 
-.include "patches.a65"		; KERNAL patches ahead of $E500
+CHECKSUM	= $81	; VICE emulator depends on hard-coded check-sum
+			; for KERNAL revision detection
 
-.if @ != KERNAL_START
-	.echo "KERNAL MUST start at ", [$]KERNAL_START
-.endif
+.fill CHECKSUM_ADDR - ROM_START, $AA
+
+.byte CHECKSUM		; KERNAL check-sum byte
+
+.fill PATCH_ADDR - @, $AA
+
+; KERNAL patches
+.include "patches.a65"
+
+; ---------------------------------------------------------------------------
+; START OF KERNAL
+
+.assert @ == KERNAL_START, "KERNAL MUST start at ", [$]KERNAL_START
 
 .include "editor1.a65"
-;.include "CONKAT (JAPAN CONVERSION TABLES)
+;.include "conkat.a65" ; (JAPAN CONVERSION TABLES)
 .include "editor2.a65"
 .include "editor3.a65"
 .include "serial40.a65"

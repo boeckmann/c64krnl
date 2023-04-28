@@ -60,4 +60,4 @@ Two flags may be altered in the file `kernal/kernal.a65`. If you alter one of th
 ## Building with UNIX Makefile
 First build the _cbmsum_ utility by invoking _make_ in the `supp` sub-directory.
 
-Adapt `Makefile.asm6502` and call it via `make -f Makefile.asm6502` to build the ROMs. If you have not altered the sources you may compare the checksums of your ROMs via `make -f Makefile.asm6502 verify`.
+Adapt `Makefile` and call it via `make` to build the ROMs. If you have not altered the sources you may compare the checksums of your ROMs via `make -f verify`.

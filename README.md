@@ -19,9 +19,9 @@ MD5 (basic.rom) = 57af4ae21d4b705c2991d98ed5c1f7b8
 Build the KERNAL and BASIC binary files:
 ```
 cd kernal
-asm6502 kernal.a65 kernal.bin kernal.lst
+asm6502 kernal.a65 -o kernal.bin -l kernal.lst
 cd ../basic
-asm6502 basic.a65 basic.bin basic.lst
+asm6502 basic.a65 -o basic.bin -l basic.lst
 cd ..
 ```
 There are now `kernal/kernal.bin` and `basic/basic.bin` files and listing files `kernal/kernal.lst` and `basic/basic.lst`.
@@ -31,8 +31,8 @@ The binaries are *not* the ROM files, because the BASIC binary is too large to f
 To generate the KERNAL and BASIC ROM files run the following after creating the binaries above. You may have to adjust the two .a65 files in the rom directory if the directory separator of your operating system is not the forward slash /:
 ```
 cd rom
-asm6502 kernal.a65 kernal.rom
-asm6502 basic.a65 basic.rom
+asm6502 kernal.a65 -o kernal.rom
+asm6502 basic.a65 -o basic.rom
 ```
 This generates `kernal.rom` and `basic.rom` inside the `rom` sub-directory. These are the ROM files.
 

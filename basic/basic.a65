@@ -1,3 +1,5 @@
+; Commodore C64 BASIC V2 ported to the ASM6502 assembler
+
 .include "disclaim.a65"
 .include "declare.a65"
 .include "tokens.a65"
@@ -30,4 +32,3 @@
 .include "code26.a65"
 .include "trig.a65"
 .include "init.a65"
-
